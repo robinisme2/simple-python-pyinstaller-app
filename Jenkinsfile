@@ -26,5 +26,13 @@ pipeline {
                 }
             }
         }
+        stage('Publish') {
+            docker.withRegistry('http://192.168.101.41:5566') {
+                def customImage = docker.build("jenkins-test-image:${env.BUILD_ID}")
+
+                /* Push the container to the custom Registry */
+                customImage.push()
+            }
+        }
     }
 }
